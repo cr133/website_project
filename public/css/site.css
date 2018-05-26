@@ -23,7 +23,8 @@ body {
 
 /* Top navigation anchors of current page */
 .navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:visited,
+.navbar-default .navbar-nav > .active > a:active,
 .navbar-default .navbar-nav > .active > a:focus {
     background: none;
     color: rgb(181, 253, 229);
@@ -31,7 +32,9 @@ body {
 
 /* Top navigation hovered list */
 .navbar-default .navbar-brand:hover,
-.navbar-default .navbar-nav > li > a:hover {
+.navbar-default .navbar-nav > li > a:visited,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > .active > a:hover {
     background: rgba(181,253,229,0.4);
     color: white;
 }
