@@ -1,3 +1,44 @@
+/* Body background */
 body {
-    background: rgb(201, 240, 255);
+    background: linear-gradient(225deg, rgb(35, 231, 215), rgb(243, 109, 232));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Design for the top navigation */
+.navbar-default {
+    background: none;
+    border: none;
+    position: relative;
+    font-family: 'Unica One', cursive;
+    font-size: 20px;
+}
+
+/* Font color of the top navigation */
+.navbar-default .navbar-brand, .navbar-default,
+.navbar-default .navbar-nav > li > a {
+    background: none;
+    color: white;
+}
+
+/* Top navigation anchors of current page */
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    background: none;
+    color: rgb(181, 253, 229);
+}
+
+/* Top navigation hovered list */
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > li > a:hover {
+    background: rgba(181,253,229,0.4);
+    color: white;
+}
+
+/* Font for body */
+.container {
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 16px;
+    background: rgba(255, 255, 240, 0.7);
 }
