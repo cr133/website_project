@@ -60,8 +60,8 @@ app.get('/departments', (req, res) => {
      })
 })
 
-app.get('/app', (req, res) => {
-    res.status(404).send("Page Not Found");
+app.get('*', (req, res) => {
+    res.status(404).send('404: page not found');
 })
 
 data_service.initialize()
