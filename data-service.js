@@ -60,3 +60,90 @@ module.exports.getDepartments = function() {
         }
     })
 }
+
+// A3. addEmployee()
+module.exports.addEmployee = function(empData) {
+
+    return new Promise((resolve, reject) => {
+        if (empData.isManager == undefined)
+            empData.isManager = false;
+        else
+            empData.isManager = true;
+
+        empData.employeeNum = employees.length + 1;
+        employees[employees.length] = empData;
+        resolve(employees);
+    })
+}
+
+// A3. employees?status
+module.exports.getEmployeesByStatus = function(status) {
+
+    return new Promise((resolve, reject) => {
+        var count = 0;
+        var empStatus = [];
+        for (var i in employees) {
+            if (employees[i].status == status)
+                empStatus[count++] = employees[i];
+        }
+        if (empStatus.length == 0)
+            reject('no results returned');
+        else {
+            resolve(empStatus);
+        }
+    })
+}
+
+// A3. employees?department
+module.exports.getEmployeesByDepartment = function(department) {
+
+    return new Promise((resolve, reject) => {
+        var count = 0;
+        var empDept = [];
+        for (var i in employees) {
+            if (employees[i].department == department)
+                empDept[count++] = employees[i];
+        }
+        if (empDept.length == 0)
+            reject('no results returned');
+        else {
+            resolve(empDept);
+        }
+    })
+}
+
+// A3. employees?manager
+module.exports.getEmployeesByManager = function(manager) {
+
+    return new Promise((resolve, reject) => {
+        var count = 0;
+        var empMan = [];
+        if (employees[manager - 1].isManager == true) {
+            for (var i = manager; i < employees.length; i++) {
+                if (employees[i].department == employees[manager - 1].department) 
+                    empMan[count++] = employees[i];
+            }
+        }   
+        if (empMan.length == 0)
+            reject('no results returned');
+        else {
+            resolve(empMan);
+        }
+    })
+}
+
+// A3. getEmployeeByNum(num)
+module.exports.getEmployeeByNum = function(num) {
+    return new Promise((resolve, reject) => {
+        var emp = [];
+        for (var i in employees) {
+            if (employees[i].employeeNum == num)
+                emp[0] = employees[i];
+        }
+        if (emp.length == 0)
+            reject('no result returned');
+        else   
+            resolve(emp[0]);
+
+    })
+}
