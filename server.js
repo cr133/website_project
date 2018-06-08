@@ -46,6 +46,34 @@ app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, "/views/about.html"));
 });
 
+// A3. Append ../add routes
+app.get('/employees/add', (req, res) => {
+    res.sendFile(path.join(__dirname, "views/addEmployee.html"));
+});
+
+app.get('/images/add', (req, res) => {
+    res.sendFile(path.join(__dirname, "views/addImage.html"));
+});
+
+// A3. Adding the POST route
+app.post('/images/add', upload.single('imageFile'), (req, res) => {
+    res.redirect('/images');
+});
+
+app.post('/employees/add', (req, res) => {
+    data_service.addEmployee(req.body)
+     .then(() => {
+        res.redirect('/employees');
+     });
+});
+
+// A3. Add GET route using the "fs" module
+app.get('/images', (req, res) => {
+    fs.readdir('./public/images/uploaded/', (err, items) => {
+        res.json(items);
+    });
+});
+
 // Step 3: Adding additional Routes
 // A3. Add filters
 app.get('/employees', (req, res) => {
@@ -91,7 +119,7 @@ app.get('/employees', (req, res) => {
 app.param('num', (req, res, next) => {
     next();
 });
-app.get('/employees/:num/', (req, res) => {
+app.get('/employee/:num/', (req, res) => {
     data_service.getEmployeeByNum(req.params.num)
      .then((data) => {
          res.json(data);
@@ -119,34 +147,6 @@ app.get('/departments', (req, res) => {
      .catch((err) => {
         res.send(err);
      })
-});
-
-// A3. Append ../add routes
-app.get('/employees/add', (req, res) => {
-    res.sendFile(path.join(__dirname, "views/addEmployee.html"));
-});
-
-app.get('/images/add', (req, res) => {
-    res.sendFile(path.join(__dirname, "views/addImage.html"));
-});
-
-// A3. Adding the POST route
-app.post('/images/add', upload.single('imageFile'), (req, res) => {
-    res.redirect('/images');
-});
-
-app.post('/employees/add', (req, res) => {
-    data_service.addEmployee(req.body)
-     .then(() => {
-        res.redirect('/employees');
-     });
-});
-
-// A3. Add GET route using the "fs" module
-app.get('/images', (req, res) => {
-    fs.readdir('./public/images/uploaded/', (err, items) => {
-        res.json(items);
-    });
 });
 
 // 404 Error page
