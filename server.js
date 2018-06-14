@@ -115,11 +115,11 @@ app.get('/employees', (req, res) => {
     }
 });
 
-// A3. Add /employee/value route
+// A3. Add /employees/value route
 app.param('num', (req, res, next) => {
     next();
 });
-app.get('/employee/:num/', (req, res) => {
+app.get('/employees/:num/', (req, res) => {
     data_service.getEmployeeByNum(req.params.num)
      .then((data) => {
          res.json(data);
