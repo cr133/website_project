@@ -28,31 +28,67 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 // A3. Add "querystring"
 var querystring = require('querystring');
+// A4. Add "express-handlebars"
+var exphbs = require('express-handlebars');
 var HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 // A3. Add urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
 
-function onHttpStart() {
-    console.log("Express http server listening on: " + HTTP_PORT);
-}
+// A4. enable .hbs extention
+app.engine('.hbs', exphbs({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    helpers: {
+        // A4. Highlight a current page
+        navLink: (url, options) => {
+            return '<li' +
+            ((url == app.locals.activeRoute) ? 
+                ' class="active"' : '') +
+                '><a href="' + url + '">' + options.fn(this)
+                + '</a></li>';
+        },
+        equal: (lvalue, rvalue, options) => {
+            if (arguments.length < 3)
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue)
+                return options.inverse(this);
+            else
+                return options.fn(this);
+        }
+    }
+}));
+app.set('view engine', '.hbs');
 
+// A4. Find active route
+app.use((req, res, next) => {
+    let route = req.baseUrl + req.path;
+    app.locals.activeRoute = 
+        (route == '/') ? '/' : route.replace(/\/$/, "");
+    next();
+});
+
+//////////////////////////////////////////////
+// Route specification
+//////////////////////////////////////////////
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "views/home.html"));
+    // A4. Render home.hbs
+    res.render('home');
 });
 
 app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/about.html"));
+    // A4. Render about.html
+    res.render('about');
 });
 
 // A3. Append ../add routes
 app.get('/employees/add', (req, res) => {
-    res.sendFile(path.join(__dirname, "views/addEmployee.html"));
+    res.render('addEmployee');
 });
 
 app.get('/images/add', (req, res) => {
-    res.sendFile(path.join(__dirname, "views/addImage.html"));
+    res.render('addImage');
 });
 
 // A3. Adding the POST route
@@ -156,7 +192,9 @@ app.get('*', (req, res) => {
 
 data_service.initialize()
  .then(() => {
-     app.listen(HTTP_PORT, onHttpStart);
+     app.listen(HTTP_PORT, () => {
+        console.log("Express http server listening on: " + HTTP_PORT);
+     });
  })
  .catch((err) => {
      res.send(err);
