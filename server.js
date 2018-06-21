@@ -106,7 +106,10 @@ app.post('/employees/add', (req, res) => {
 // A3. Add GET route using the "fs" module
 app.get('/images', (req, res) => {
     fs.readdir('./public/images/uploaded/', (err, items) => {
-        res.json(items);
+        res.render('images', {
+            // A4. JSON -> Render an img array
+            data: items
+        })
     });
 });
 
@@ -116,7 +119,7 @@ app.get('/employees', (req, res) => {
     if (Object.keys(req.query) == 'status') {
         data_service.getEmployeesByStatus(req.query.status)
          .then((data) => {
-             res.json(data);
+             res.json(data);    
          })
          .catch((err) => {
             res.send(err);
@@ -143,10 +146,11 @@ app.get('/employees', (req, res) => {
     else {
         data_service.getAllEmployees()
          .then((data) => {
-            res.json(data);
+            res.render('employees', {employees: data});
          })
          .catch((err) => {
-            res.send(err);
+            // NOT WORKING
+            res.render({message: "no results"});
          })
     }
 });

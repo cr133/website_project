@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Employees</h2>
+        <hr>
+        <table>
+            <tr>
+                <th>Employee Num</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Manager ID</th>
+                <th>Status</th>
+                <th>Department</th>
+                <th>Hired On</th>
+            </tr>
+            {{#each employees}}
+            <tr>
+                <td>{{employeeNum}}</td>
+                <td><a href="/employees/{{employeeNum}}"> 
+                    {{firstName}} {{lastName}}</a></td>
+                <td><a href="mailto:{{email}}">{{email}}</a></td>
+                <td>{{addressStreet}}<br>
+                    {{addressCity}} {{addressState}}<br>
+                    {{addressPostal}}</td>
+                <td>{{employeeManagerNum}}</td>
+                <td>{{status}}</td>
+                <td>{{department}}</td>
+                <td>{{hireDate}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>

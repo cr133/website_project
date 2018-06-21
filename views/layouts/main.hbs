@@ -1,5 +1,3 @@
-{{!-- NOTE: Current section is not highlighted because
-            of this layout. ONLY home --}}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,18 +31,19 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <!-- Update Link 1 to read Home -->
-            <li class="active"><a href="/">Home</a></li>
+            {{#navLink "/"}}Home{{/navLink}}
             <!-- Update Link 2 to read About and change it's href property to /about -->
             {{#navLink "/about"}}About{{/navLink}}
             <!-- A3. Add two entries -->
-            <li><a href="/employees/add">Add Employee</a></li>
-            <li><a href="/images/add">Add Image</a></li>
+            {{#navLink "/employees/add"}}Add Employee{{/navLink}}
+            {{#navLink "/images/add"}}Add Image{{/navLink}}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- Image entry as the first child -->
             <li><a href="/images">Images</a></li>
             <li><a href="/employees">Employees</a></li>
-            <li><a href="/managers">Managers</a></li>
+            {{!-- Not use anymore --}}
+            {{!-- <li><a href="/managers">Managers</a></li> --}}
             <li><a href="/departments">Departments</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
