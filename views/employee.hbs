@@ -1,10 +1,16 @@
 <div class="row">
     <div class="col-md-12">
+        {{#unless employee}}
+            <div class="col-md-12 text-center">
+                <strong>{{message}}</strong>
+            </div>
+        {{else}}
         <h2>{{employee.firstName}} {{employee.lastName}} - Employee: {{employee.employeeNum}}</h2>
         <hr>
-        <form metod="POST" action="/employees/update">
+        <form method="POST" action="/employees/update">
             <fieldset>
                 <legend>Personal Information</legend>
+                <input id="employeeNum" name="employeeNum" type="hidden" value="{{employee.employeeNum}}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -110,8 +116,9 @@
                 </div>
             </fieldset>
             <hr>
-            <input type="submit" class="btn btn-primary pull-right" value="Add Employee">
+            <input type="submit" class="btn btn-primary pull-right" value="Update Employee">
             <br><br><br>
         </form>
+        {{/unless}}
     </div>
 </div>

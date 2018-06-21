@@ -2,7 +2,13 @@
     <div class="col-md-12">
         <h2>Employees</h2>
         <hr>
-        <table>
+        {{#unless employees}}
+            <div class="col-md-12 text-center">
+                <strong>{{message}}</strong>
+            </div>
+        {{else}}
+        <div class="table-responsive">
+        <table class="table">
             <tr>
                 <th>Employee Num</th>
                 <th>Full Name</th>
@@ -16,7 +22,6 @@
             {{#each employees}}
             <tr>
                 <td>{{employeeNum}}</td>
-                {{!-- Link to employees/add --}}
                 <td><a href="/employees/{{employeeNum}}"> 
                     {{firstName}} {{lastName}}</a></td>
                 <td><a href="mailto:{{email}}">{{email}}</a></td>
@@ -33,10 +38,7 @@
             </tr>
             {{/each}}
         </table>
+        </div>
+        {{/unless}}
     </div>
-    {{#unless employees}}
-    <div class="col-md-12" text-center>
-        <strong>{{message}}</strong>
-    </div>
-    {{/unless}}
 </div>

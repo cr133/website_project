@@ -26,7 +26,7 @@ module.exports.getAllEmployees = function() {
 
     return new Promise((resolve, reject) => {
         if (employees.length == 0)
-            reject('no result returned');
+            reject('no results');
         else {
             resolve(employees);
         }
@@ -43,7 +43,7 @@ module.exports.getManagers = function() {
                 managers[count++] = employees[i];
         }
         if (managers.length == 0)
-            reject('no results returned');
+            reject('no results');
         else {
             resolve(managers);
         }
@@ -54,7 +54,7 @@ module.exports.getDepartments = function() {
     
     return new Promise((resolve, reject) => {
         if (departments.length == 0)
-            reject('no result returned');
+            reject('no results');
         else {
             resolve(departments);
         }
@@ -100,7 +100,7 @@ module.exports.getEmployeesByStatus = function(status) {
                 empStatus[count++] = employees[i];
         }
         if (empStatus.length == 0)
-            reject('no results returned');
+            reject('no results');
         else {
             resolve(empStatus);
         }
@@ -118,7 +118,7 @@ module.exports.getEmployeesByDepartment = function(department) {
                 empDept[count++] = employees[i];
         }
         if (empDept.length == 0)
-            reject('no results returned');
+            reject('no results');
         else {
             resolve(empDept);
         }
@@ -136,7 +136,7 @@ module.exports.getEmployeesByManager = function(manager) {
                 empMan[count++] = employees[i];
         }
         if (empMan.length == 0)
-            reject('no results returned');
+            reject('no results');
         else {
             resolve(empMan);
         }
@@ -152,7 +152,7 @@ module.exports.getEmployeeByNum = function(num) {
                 emp[0] = employees[i];
         }
         if (emp.length == 0)
-            reject('no result returned');
+            reject('no results');
         else   
             resolve(emp[0]);
 

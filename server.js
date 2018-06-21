@@ -1,12 +1,12 @@
 /****************************************************************************************************
-*  WEB322 – Assignment 03
+*  WEB322 – Assignment 04
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
 *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: Cheolryeong Lee Student ID: 119862175 Date: 07. 06. 18
+*  Name: Cheolryeong Lee Student ID: 119862175 Date: 21. 06. 18
 *
-*  Online (Heroku) Link: https://web322a3.herokuapp.com/
+*  Online (Heroku) Link: https://web322a4.herokuapp.com/
 *
 *****************************************************************************************************/ 
 var express = require('express');
@@ -105,7 +105,6 @@ app.post('/employees/add', (req, res) => {
 
 // A4. Adding an updated info to POST
 app.post('/employees/update', (req, res) => {
-    console.log("Updated");
     data_service.updateEmployee(req.body)
      .then(() => {
         res.redirect('/employees');
@@ -131,7 +130,7 @@ app.get('/employees', (req, res) => {
             res.render('employees', {employees: data});   
          })
          .catch((err) => {
-            res.render({message: "no results"});
+            res.render('employees', {message: err});
          })
     }
     else if (Object.keys(req.query) == 'department') {
@@ -140,7 +139,7 @@ app.get('/employees', (req, res) => {
             res.render('employees', {employees: data});
          })
          .catch((err) => {
-            res.render({message: "no results"});
+            res.render('employees', {message: err});
          })
     }
     else if (Object.keys(req.query) == 'manager') {
@@ -149,7 +148,7 @@ app.get('/employees', (req, res) => {
             res.render('employees', {employees: data});
          })
          .catch((err) => {
-            res.render({message: "no results"});
+            res.render('employees', {message: err});
          })
     }
     else {
@@ -158,8 +157,7 @@ app.get('/employees', (req, res) => {
             res.render('employees', {employees: data});
          })
          .catch((err) => {
-             console.log(err);
-            res.render({message: err});
+            res.render('employees', {message: err});
          })
     }
 });
@@ -174,19 +172,20 @@ app.get('/employees/:num/', (req, res) => {
          res.render('employee', {employee: data});
      })
      .catch((err) => {
-         res.render('employee', {message: "no results"});
+        res.render('employee', {message: err});
      })
 });
 
-app.get('/managers', (req, res) => {
-    data_service.getManagers()
-     .then((data) => {
-         res.json(data);
-     })
-     .catch((err) => {
-        res.send(err);
-     })
-});
+// Not use on A4
+// app.get('/managers', (req, res) => {
+//     data_service.getManagers()
+//      .then((data) => {
+//          res.json(data);
+//      })
+//      .catch((err) => {
+//         res.send(err);
+//      })
+// });
 
 app.get('/departments', (req, res) => {
     data_service.getDepartments()
@@ -194,7 +193,7 @@ app.get('/departments', (req, res) => {
          res.render('departments', {departments: data});
      })
      .catch((err) => {
-        res.send(err);
+        res.render('departments', {message: err});
      })
 });
 

@@ -2,8 +2,13 @@
     <div class="col-md-12">
         <h2>Departments</h2>
         <hr>
+        {{#unless departments}}
+            <div class="col-md-12 text-center">
+                <strong>{{message}}</strong>
+            </div>
+        {{else}}
         <div class="table-responsive">
-            <table>
+            <table class="table">
                 <tr>
                     <th>Department Number</th>
                     <th>Department Name</th>
@@ -18,5 +23,6 @@
                 {{/each}}
             </table>
         </div>
+        {{/unless}}
     </div>
 </div>
