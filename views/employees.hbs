@@ -16,18 +16,27 @@
             {{#each employees}}
             <tr>
                 <td>{{employeeNum}}</td>
+                {{!-- Link to employees/add --}}
                 <td><a href="/employees/{{employeeNum}}"> 
                     {{firstName}} {{lastName}}</a></td>
                 <td><a href="mailto:{{email}}">{{email}}</a></td>
                 <td>{{addressStreet}}<br>
                     {{addressCity}} {{addressState}}<br>
                     {{addressPostal}}</td>
-                <td>{{employeeManagerNum}}</td>
-                <td>{{status}}</td>
-                <td>{{department}}</td>
+                <td><a href="/employees?manager={{employeeManagerNum}}">
+                    {{employeeManagerNum}}</a></td>
+                <td><a href="/employees?status={{status}}">
+                    {{status}}</a></td>
+                <td><a href="/employees?department={{department}}">
+                    {{department}}</a></td>
                 <td>{{hireDate}}</td>
             </tr>
             {{/each}}
         </table>
     </div>
+    {{#unless employees}}
+    <div class="col-md-12" text-center>
+        <strong>{{message}}</strong>
+    </div>
+    {{/unless}}
 </div>

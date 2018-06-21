@@ -76,6 +76,19 @@ module.exports.addEmployee = function(empData) {
     })
 }
 
+// A4. updateEmployee()
+module.exports.updateEmployee = function(updtEmp) {
+    return new Promise((resolve, reject) => {
+        for (var i in employees) {
+            if (employees[i].employeeNum == updtEmp.employeeNum) {
+                employees[i] = updtEmp;
+                break;
+            }
+        }
+        resolve();
+    })
+}
+
 // A3. employees?status
 module.exports.getEmployeesByStatus = function(status) {
 
@@ -118,12 +131,10 @@ module.exports.getEmployeesByManager = function(manager) {
     return new Promise((resolve, reject) => {
         var count = 0;
         var empMan = [];
-        if (employees[manager - 1].isManager == true) {
-            for (var i = manager; i < employees.length; i++) {
-                if (employees[i].department == employees[manager - 1].department) 
-                    empMan[count++] = employees[i];
-            }
-        }   
+        for (var i in employees) {
+            if (employees[i].employeeManagerNum == manager)
+                empMan[count++] = employees[i];
+        }
         if (empMan.length == 0)
             reject('no results returned');
         else {

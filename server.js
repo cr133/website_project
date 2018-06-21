@@ -103,6 +103,15 @@ app.post('/employees/add', (req, res) => {
      });
 });
 
+// A4. Adding an updated info to POST
+app.post('/employees/update', (req, res) => {
+    console.log("Updated");
+    data_service.updateEmployee(req.body)
+     .then(() => {
+        res.redirect('/employees');
+     })
+});
+
 // A3. Add GET route using the "fs" module
 app.get('/images', (req, res) => {
     fs.readdir('./public/images/uploaded/', (err, items) => {
@@ -119,28 +128,28 @@ app.get('/employees', (req, res) => {
     if (Object.keys(req.query) == 'status') {
         data_service.getEmployeesByStatus(req.query.status)
          .then((data) => {
-             res.json(data);    
+            res.render('employees', {employees: data});   
          })
          .catch((err) => {
-            res.send(err);
+            res.render({message: "no results"});
          })
     }
     else if (Object.keys(req.query) == 'department') {
         data_service.getEmployeesByDepartment(req.query.department)
          .then((data) => {
-             res.json(data);
+            res.render('employees', {employees: data});
          })
          .catch((err) => {
-            res.send(err);
+            res.render({message: "no results"});
          })
     }
     else if (Object.keys(req.query) == 'manager') {
         data_service.getEmployeesByManager(req.query.manager)
          .then((data) => {
-             res.json(data);
+            res.render('employees', {employees: data});
          })
          .catch((err) => {
-             res.send(err);
+            res.render({message: "no results"});
          })
     }
     else {
@@ -149,8 +158,8 @@ app.get('/employees', (req, res) => {
             res.render('employees', {employees: data});
          })
          .catch((err) => {
-            // NOT WORKING
-            res.render({message: "no results"});
+             console.log(err);
+            res.render({message: err});
          })
     }
 });
@@ -162,10 +171,10 @@ app.param('num', (req, res, next) => {
 app.get('/employees/:num/', (req, res) => {
     data_service.getEmployeeByNum(req.params.num)
      .then((data) => {
-         res.json(data);
+         res.render('employee', {employee: data});
      })
      .catch((err) => {
-         res.send(err);
+         res.render('employee', {message: "no results"});
      })
 });
 
@@ -182,7 +191,7 @@ app.get('/managers', (req, res) => {
 app.get('/departments', (req, res) => {
     data_service.getDepartments()
      .then((data) => {
-         res.json(data);
+         res.render('departments', {departments: data});
      })
      .catch((err) => {
         res.send(err);
