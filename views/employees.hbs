@@ -1,6 +1,8 @@
 <div class="row">
     <div class="col-md-12">
-        <h2>Employees</h2>
+        <h2>Employees
+            <a href="/employees/add" class="btn btn-success pull-right">Add New Employee</a>
+        </h2>
         <hr>
         {{#unless employees}}
             <div class="col-md-12 text-center">
@@ -18,6 +20,7 @@
                 <th>Status</th>
                 <th>Department</th>
                 <th>Hired On</th>
+                <th></th>
             </tr>
             {{#each employees}}
             <tr>
@@ -35,6 +38,7 @@
                 <td><a href="/employees?department={{department}}">
                     {{department}}</a></td>
                 <td>{{hireDate}}</td>
+                <td><a href="employees/delete/{{employeeNum}}" class="btn btn-danger">remove</a></td>
             </tr>
             {{/each}}
         </table>

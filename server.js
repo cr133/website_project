@@ -1,12 +1,12 @@
 /****************************************************************************************************
-*  WEB322 – Assignment 04
+*  WEB322 – Assignment 05
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
 *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: Cheolryeong Lee Student ID: 119862175 Date: 21. 06. 18
+*  Name: Cheolryeong Lee Student ID: 119862175 Date: 12. 07. 18
 *
-*  Online (Heroku) Link: https://web322a4.herokuapp.com/
+*  Online (Heroku) Link: https://web322a5.herokuapp.com/
 *
 *****************************************************************************************************/ 
 var express = require('express');
@@ -73,61 +73,39 @@ app.use((req, res, next) => {
 // Route specification
 //////////////////////////////////////////////
 app.get('/', (req, res) => {
-    // A4. Render home.hbs
     res.render('home');
 });
 
 app.get('/about', (req, res) => {
-    // A4. Render about.html
     res.render('about');
 });
-
-// A3. Append ../add routes
-app.get('/employees/add', (req, res) => {
-    res.render('addEmployee');
+//////////////////////////////////////////////
+// images
+//////////////////////////////////////////////
+app.get('/images', (req, res) => {
+    fs.readdir('./public/images/uploaded/', (err, items) => {
+        res.render('images', {
+            data: items
+        })
+    });
 });
 
 app.get('/images/add', (req, res) => {
     res.render('addImage');
 });
 
-// A3. Adding the POST route
 app.post('/images/add', upload.single('imageFile'), (req, res) => {
     res.redirect('/images');
 });
 
-app.post('/employees/add', (req, res) => {
-    data_service.addEmployee(req.body)
-     .then(() => {
-        res.redirect('/employees');
-     });
-});
-
-// A4. Adding an updated info to POST
-app.post('/employees/update', (req, res) => {
-    data_service.updateEmployee(req.body)
-     .then(() => {
-        res.redirect('/employees');
-     })
-});
-
-// A3. Add GET route using the "fs" module
-app.get('/images', (req, res) => {
-    fs.readdir('./public/images/uploaded/', (err, items) => {
-        res.render('images', {
-            // A4. JSON -> Render an img array
-            data: items
-        })
-    });
-});
-
-// Step 3: Adding additional Routes
-// A3. Add filters
+//////////////////////////////////////////////
+// employees
+//////////////////////////////////////////////
 app.get('/employees', (req, res) => {
     if (Object.keys(req.query) == 'status') {
         data_service.getEmployeesByStatus(req.query.status)
          .then((data) => {
-            res.render('employees', {employees: data});   
+            res.render('employees', { employees: data });   
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -136,7 +114,7 @@ app.get('/employees', (req, res) => {
     else if (Object.keys(req.query) == 'department') {
         data_service.getEmployeesByDepartment(req.query.department)
          .then((data) => {
-            res.render('employees', {employees: data});
+            res.render('employees', { employees: data });   
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -145,7 +123,7 @@ app.get('/employees', (req, res) => {
     else if (Object.keys(req.query) == 'manager') {
         data_service.getEmployeesByManager(req.query.manager)
          .then((data) => {
-            res.render('employees', {employees: data});
+            res.render('employees', { employees: data });   
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -154,7 +132,7 @@ app.get('/employees', (req, res) => {
     else {
         data_service.getAllEmployees()
          .then((data) => {
-            res.render('employees', {employees: data});
+            res.render('employees', { employees: data });   
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -162,38 +140,130 @@ app.get('/employees', (req, res) => {
     }
 });
 
-// A3. Add /employees/value route
-app.param('num', (req, res, next) => {
-    next();
+app.get('/employees/add', (req, res) => {
+    data_service.getDepartments()
+     .then((data) => {
+        res.render('addEmployee', { departments: data });
+     })
+     .catch(() => {
+         res.render('addEmployee', { departments: [] });
+     })
 });
+
+app.post('/employees/add', (req, res) => {
+    data_service.addEmployee(req.body)
+     .then(() => {
+        res.redirect('/employees');
+     })
+     .catch(() => {
+         res.status(500).send('Unable to Add Employee')
+     })
+});
+
+app.post('/employees/update', (req, res) => {
+    data_service.updateEmployee(req.body)
+     .then(() => {
+        res.redirect('/employees');
+     })
+     .catch(() => {
+        res.status(500).send('Unable to Update Employee')
+    })
+});
+
+app.param('num', (req, res, next) => { next(); });
 app.get('/employees/:num/', (req, res) => {
+
+    let viewData = {};
+
     data_service.getEmployeeByNum(req.params.num)
      .then((data) => {
-         res.render('employee', {employee: data});
+         if (data)
+            viewData.employee = data;
+         else
+            viewData.employee = null;
      })
-     .catch((err) => {
-        res.render('employee', {message: err});
+     .catch(() => {
+         viewData.employee = null;
+     }).then(data_service.getDepartments)
+     .then((data) => {
+         viewData.departments = data;
+
+         for (let i = 0; i < viewData.departments.length; i++) {
+             if (viewData.departments[i].departmentId == viewData.employee.department)
+                viewData.departments[i].selected = true;
+         }
      })
+     .catch(() => {
+         viewData.departments = [];
+     }).then(() => {
+         if (viewData.employee == null)
+            res.status(404).send('Employee Not Found');
+         else {
+             console.log(viewData.employee);
+             res.render('employee', { viewData: viewData });
+         }
+     });
 });
 
-// Not use on A4
-// app.get('/managers', (req, res) => {
-//     data_service.getManagers()
-//      .then((data) => {
-//          res.json(data);
-//      })
-//      .catch((err) => {
-//         res.send(err);
-//      })
-// });
+// A5. delete emp
+app.get('/employees/delete/:num', (req, res) => {
+    data_service.deleteEmployeeByNum(req.params.num)
+     .then(() => {
+         res.redirect('/employees');
+     })
+     .catch(() => {
+         res.status(500).send('Unable to Remove Employee');
+     })
+})
 
+//////////////////////////////////////////////
+// departments
+//////////////////////////////////////////////
 app.get('/departments', (req, res) => {
     data_service.getDepartments()
      .then((data) => {
-         res.render('departments', {departments: data});
+         res.render('departments', { departments: data });
      })
      .catch((err) => {
         res.render('departments', {message: err});
+     })
+});
+
+app.get('/departments/add', (req, res) => {
+    res.render('addDepartment');
+})
+
+app.post('/departments/add', (req, res) => {
+    data_service.addDepartment(req.body)
+     .then(() => {
+         res.redirect('/departments');
+     })
+     .catch(() => {
+        res.status(500).send('Unable to Add Department')
+    })
+})
+
+// TEMP: instruction: department me: departments
+app.post('/departments/update', (req, res) => {
+    data_service.updateDepartment(req.body)
+     .then(() => {
+         res.redirect('/departments');
+     })
+     .catch(() => {
+        res.status(500).send('Unable to Update Department')
+    })
+})
+
+app.param('id', (req, res, next) => { next(); });
+app.get('/departments/:id/', (req, res) => {
+    data_service.getDepartmentById(req.params.id)
+     .then((data) => {
+         if (data == undefined)
+            res.status(404).send('Department Not Found');
+         res.render('department', { department: data });
+     })
+     .catch((err) => {
+        res.status(404).send('Department Not Found');
      })
 });
 
@@ -205,7 +275,7 @@ app.get('*', (req, res) => {
 data_service.initialize()
  .then(() => {
      app.listen(HTTP_PORT, () => {
-        console.log("Express http server listening on: " + HTTP_PORT);
+        console.log('Express http server listening on: ' + HTTP_PORT);
      });
  })
  .catch((err) => {
