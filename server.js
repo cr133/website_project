@@ -105,7 +105,10 @@ app.get('/employees', (req, res) => {
     if (Object.keys(req.query) == 'status') {
         data_service.getEmployeesByStatus(req.query.status)
          .then((data) => {
-            res.render('employees', { employees: data });   
+            if (data.length > 0)
+                res.render('employees', { employees: data });
+            else
+                res.render('employees', { message: 'no results'});
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -114,7 +117,10 @@ app.get('/employees', (req, res) => {
     else if (Object.keys(req.query) == 'department') {
         data_service.getEmployeesByDepartment(req.query.department)
          .then((data) => {
-            res.render('employees', { employees: data });   
+            if (data.length > 0)
+                res.render('employees', { employees: data });
+            else
+                res.render('employees', { message: 'no results'});
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -123,7 +129,10 @@ app.get('/employees', (req, res) => {
     else if (Object.keys(req.query) == 'manager') {
         data_service.getEmployeesByManager(req.query.manager)
          .then((data) => {
-            res.render('employees', { employees: data });   
+            if (data.length > 0)
+                res.render('employees', { employees: data });
+            else
+                res.render('employees', { message: 'no results'});
          })
          .catch((err) => {
             res.render('employees', {message: err});
@@ -132,7 +141,10 @@ app.get('/employees', (req, res) => {
     else {
         data_service.getAllEmployees()
          .then((data) => {
-            res.render('employees', { employees: data });   
+            if (data.length > 0)
+                res.render('employees', { employees: data });
+            else
+                res.render('employees', { message: 'no results'});
          })
          .catch((err) => {
             res.render('employees', {message: err});
