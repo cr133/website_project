@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 
-// censored
 var sequelize = new Sequelize('d9o2101qmk6t5l', 'jefburvdbajbxo', '95e55dc42a7d4055641852e482104d0963afa5143ddf3afaa3e76f385b27dfbb', {
     host: 'ec2-54-235-244-185.compute-1.amazonaws.com',
     dialect: 'postgres',
