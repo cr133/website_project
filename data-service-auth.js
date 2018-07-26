@@ -36,5 +36,30 @@ module.exports.initialize() = () => {
 };
 
 module.exports.registerUser(userData) = () => {
-    
+    // Assignment for an object?
+    const user = {
+        username:    userData.userName,
+        useragent:   userData.userAgent,
+        email:       userData.email,
+        password:    userData.password,
+        password2:   userData.password2
+    };
+
+    const password1 = user.password1;
+    const password2 = user.password2;
+ 
+    // Validation part -> probably not work
+    // Invalid
+    if (password1 !== password2)
+        reject('Passwords do not match')
+    // Valid - create a new User from the userData, this line is confirmed
+    let newUser = new User(userData);
+
+    // Unsure
+    newUser.save((err) => {
+        if (err && err.code !== 11000)
+            reject('There was an error creating the user: ' + err);
+        else
+            resolve();
+    })
 }
