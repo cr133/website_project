@@ -13,6 +13,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var data_service = require('./data-service');
+var data_service_auth = require('./data-service-auth');
 // A3. Add multer
 var multer = require('multer');
 var storage = multer.diskStorage({
