@@ -1,12 +1,12 @@
 /****************************************************************************************************
-*  WEB322 – Assignment 05
+*  WEB322 – Assignment 06
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
 *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: Cheolryeong Lee Student ID: 119862175 Date: 12. 07. 18
+*  Name: Cheolryeong Lee Student ID: 119862175 Date: 28. 07. 18
 *
-*  Online (Heroku) Link: https://web322a5.herokuapp.com/
+*  Online (Heroku) Link: https://web322a06.herokuapp.com/
 *
 *****************************************************************************************************/ 
 var express = require('express');
@@ -27,8 +27,6 @@ var upload = multer({storage: storage});
 var fs = require('fs');
 // A3. Add "body-parser"
 var bodyParser = require('body-parser');
-// A3. Add "querystring"
-// var querystring = require('querystring');
 // A4. Add "express-handlebars"
 var exphbs = require('express-handlebars');
 // A6. Add client-sessions
@@ -37,7 +35,6 @@ var HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
 
 // A4. enable .hbs extention
 app.engine('.hbs', exphbs({
@@ -79,7 +76,7 @@ app.use(clientSessions({
     duration: 2 * 60 * 1000,
     activeDuration: 1000 * 60
 }))
-// 4-4 - session or sessionName?
+
 app.use((req, res, next) => {
     res.locals.session = req.session;
     next();
@@ -205,7 +202,6 @@ app.post('/employees/update', ensureLogin, (req, res) => {
     })
 });
 
-app.param('num', (req, res, next) => { next(); });
 app.get('/employees/:num/', ensureLogin, (req, res) => {
 
     let viewData = {};
@@ -277,7 +273,6 @@ app.post('/departments/add', ensureLogin, (req, res) => {
     })
 })
 
-// TEMP: instruction: department me: departments
 app.post('/departments/update', ensureLogin, (req, res) => {
     data_service.updateDepartment(req.body)
      .then(() => {
@@ -288,7 +283,6 @@ app.post('/departments/update', ensureLogin, (req, res) => {
     })
 })
 
-app.param('id', (req, res, next) => { next(); });
 app.get('/departments/:id/', ensureLogin, (req, res) => {
     data_service.getDepartmentById(req.params.id)
      .then((data) => {

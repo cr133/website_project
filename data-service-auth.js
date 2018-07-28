@@ -15,8 +15,7 @@ const userSchema = new Schema({
     }]
 });
 
-// 6. Once you have defined your "userSchema" 
-// per the specification above, add the line
+// Set Global variable to utilize table
 let User;
 
 // initialize function
@@ -74,16 +73,15 @@ module.exports.checkUser = (userData) => {
                         reject('Incorrect Password for user: ' + userData.userName);
                }
             })
-            var loginHistory = [];
-            // Push objects
-            loginHistory.push(
+            
+            user[0].loginHistory.push(
                 { dateTime: (new Date()).toString(),
                   userAgent: userData.userAgent }
             )
+            
             // Invoke update method
             User.update({ userName: userData.userName },
-                // Will need to modify
-                { $set: { loginHistory: loginHistory }})
+                { $set: { loginHistory: user[0].loginHistory }})
                 .exec()
                 .then(() => {
                     resolve(user);
@@ -93,7 +91,6 @@ module.exports.checkUser = (userData) => {
                 })
          })
          .catch(() => {
-             // user in the note but probably userName is correct
              reject('Unable to find user: ' + userData.userName);
          })
     })
