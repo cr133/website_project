@@ -9,34 +9,30 @@
 *  Online (Heroku) Link: https://web322a06.herokuapp.com/
 *
 *****************************************************************************************************/ 
-var express = require('express');
-var app = express();
-var path = require('path');
-var data_service = require('./data-service');
-var data_service_auth = require('./data-service-auth');
-// A3. Add multer
-var multer = require('multer');
-var storage = multer.diskStorage({
+const express = require('express');
+const app = express();
+const path = require('path');
+const data_service = require('./data-service');
+const data_service_auth = require('./data-service-auth');
+const multer = require('multer');
+const fs = require('fs');
+const bodyParser = require('body-parser');
+const exphbs = require('express-handlebars');
+const clientSessions = require('client-sessions');
+
+const HTTP_PORT = process.env.PORT || 8080; 
+
+const storage = multer.diskStorage({
     destination: './public/images/uploaded',
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-var upload = multer({storage: storage});
-// A3. Add "fs" module
-var fs = require('fs');
-// A3. Add "body-parser"
-var bodyParser = require('body-parser');
-// A4. Add "express-handlebars"
-var exphbs = require('express-handlebars');
-// A6. Add client-sessions
-var clientSessions = require('client-sessions');
-var HTTP_PORT = process.env.PORT || 8080;
+const upload = multer({storage: storage});
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-// A4. enable .hbs extention
 app.engine('.hbs', exphbs({
     extname: '.hbs',
     defaultLayout: 'main',
